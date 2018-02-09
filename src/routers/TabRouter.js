@@ -24,6 +24,7 @@ export default (routeConfigs, config = {}) => {
   const initialRouteIndex = order.indexOf(initialRouteName);
   const backBehavior = config.backBehavior || 'initialRoute';
   const shouldBackNavigateToInitialRoute = backBehavior === 'initialRoute';
+  const shouldBackNavigateToPreviousRoute = backBehavior === 'previousRoute';
   const tabRouters = {};
   order.forEach(routeName => {
     const routeConfig = routeConfigs[routeName];
@@ -118,6 +119,8 @@ export default (routeConfigs, config = {}) => {
       if (action.type === NavigationActions.BACK) {
         if (isBackEligible && shouldBackNavigateToInitialRoute) {
           activeTabIndex = initialRouteIndex;
+        } else if (isBackEligible && shouldBackNavigateToPreviousRoute && activeTabIndex > 0) { 
+          activeTabIndex--;
         } else {
           return state;
         }
